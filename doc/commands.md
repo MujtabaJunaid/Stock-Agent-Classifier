@@ -1,21 +1,21 @@
-# ⚡ Quick Commands Reference
+# Quick Commands Reference
 
-## 🚀 Setup & Run
+## Setup & Run
 - **Start Project**: `./run_docker.sh` (Builds & starts all services)
 - **Restart Services**: `docker-compose restart`
 - **View Logs**: `docker-compose logs -f`
 - **Stop Project**: `docker-compose down`
 
-## 🧠 Training & Prediction (API)
+## Training & Prediction (API)
 - **Train Parent (S&P 500)**: `curl -X POST http://localhost:8000/train-parent`
 - **Train Child (AAPL)**: `curl -X POST http://localhost:8000/train-child -d '{"ticker": "AAPL"}'`
 - **Predict Child**: `curl -X POST http://localhost:8000/predict-child -d '{"ticker": "AAPL"}'`
 - **Check Task Status**: `curl http://localhost:8000/status/aapl`
 
-## 🕵️ AI Agent
+## AI Agent
 - **Full Analysis**: `curl -X POST http://localhost:8000/analyze -d '{"ticker": "AAPL"}'`
 
-## 🛠️ System Maintenance
+## System Maintenance
 - **Health Check**: `curl http://localhost:8000/health`
 - **List Outputs**: `curl http://localhost:8000/outputs`
 - **Reset System (Wipe Data)**: `curl -X DELETE http://localhost:8000/system/reset`

@@ -1,4 +1,4 @@
-# 📈 MLOps Stock Classification Pipeline
+# MLOps Stock Classification Pipeline
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
@@ -15,43 +15,43 @@
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```mermaid
 graph TB
     subgraph "Client Layer"
-        REACT["⚛️ React.js Frontend"]
+        REACT["React.js Frontend"]
         BROWSER["Web Browser"]
     end
     
     subgraph "API & Orchestration"
-        FASTAPI["🚀 FastAPI Backend"]
-        LANGGRAPH["🤖 LangGraph Agents"]
-        OLLAMA["🧠 Ollama LLM Engine"]
+        FASTAPI["FastAPI Backend"]
+        LANGGRAPH["LangGraph Agents"]
+        OLLAMA["Ollama LLM Engine"]
     end
     
     subgraph "ML Pipeline"
-        TRAIN["📊 Training Pipeline"]
-        LSTM["🧠 LSTM Parent-Child Models"]
-        INFER["⚡ Inference Engine"]
+        TRAIN["Training Pipeline"]
+        LSTM["LSTM Parent-Child Models"]
+        INFER["Inference Engine"]
     end
     
     subgraph "Data & Features"
-        FEAST["🍽️ Feast Feature Store"]
-        YFINANCE["📈 Yahoo Finance Data"]
-        FINHUB["💰 FinnHub API"]
+        FEAST["Feast Feature Store"]
+        YFINANCE["Yahoo Finance Data"]
+        FINHUB["FinnHub API"]
     end
     
     subgraph "Storage & Caching"
-        REDIS["💾 Redis Cache"]
-        QDRANT["🔍 Qdrant Vector DB"]
-        MLFLOW["📦 MLflow Registry"]
+        REDIS["Redis Cache"]
+        QDRANT["Qdrant Vector DB"]
+        MLFLOW["MLflow Registry"]
     end
     
     subgraph "Monitoring & Observability"
-        PROMETHEUS["📊 Prometheus Metrics"]
-        GRAFANA["📈 Grafana Dashboards"]
-        EVIDENTLY["🔍 Data Drift Detection"]
+        PROMETHEUS["Prometheus Metrics"]
+        GRAFANA["Grafana Dashboards"]
+        EVIDENTLY["Data Drift Detection"]
     end
     
     BROWSER -->|User Input| REACT
@@ -72,24 +72,24 @@ graph TB
 
 ---
 
-## 🌟 Overview
+## Overview
 
 This project is a **production-grade MLOps pipeline** that automates the complete lifecycle of stock price prediction and financial analysis. It combines cutting-edge machine learning with modern infrastructure practices.
 
 ### Key Capabilities
 
-- **🧠 Transfer Learning Architecture**: Parent-Child model strategy trained on S&P 500 composite, then fine-tuned per ticker with minimal data overhead.
-- **🤖 Multi-Agent AI System**: LangGraph-powered agents (Financial Analyst, Market Expert, Data Validator, Report Generator) orchestrate institutional-grade analysis.
-- **⚛️ Modern React Frontend**: Beautiful, responsive UI built with React 18, TypeScript, Tailwind CSS, and Recharts for real-time data visualization.
-- **⚡ Real-time Inference**: Low-latency predictions with Redis caching (1-day TTL) and optimized serving pipeline.
-- **🍽️ Feast Feature Store**: Consistent, versioned features for training and serving environments.
-- **🔍 Full Observability**: Prometheus + Grafana monitoring, Evidently AI drift detection, and comprehensive logging.
-- **📊 MLflow Experiment Tracking**: Full experiment registry, model versioning, and DagsHub remote tracking.
-- **🐳 Cloud-Ready Infrastructure**: Docker Compose for local development, Kubernetes manifests for production deployment.
+- **Transfer Learning Architecture**: Parent-Child model strategy trained on S&P 500 composite, then fine-tuned per ticker with minimal data overhead.
+- **Multi-Agent AI System**: LangGraph-powered agents (Financial Analyst, Market Expert, Data Validator, Report Generator) orchestrate institutional-grade analysis.
+- **Modern React Frontend**: Beautiful, responsive UI built with React 18, TypeScript, Tailwind CSS, and Recharts for real-time data visualization.
+- **Real-time Inference**: Low-latency predictions with Redis caching (1-day TTL) and optimized serving pipeline.
+- **Feast Feature Store**: Consistent, versioned features for training and serving environments.
+- **Full Observability**: Prometheus + Grafana monitoring, Evidently AI drift detection, and comprehensive logging.
+- **MLflow Experiment Tracking**: Full experiment registry, model versioning, and DagsHub remote tracking.
+- **Cloud-Ready Infrastructure**: Docker Compose for local development, Kubernetes manifests for production deployment.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 | :--- | :--- |
@@ -108,7 +108,7 @@ This project is a **production-grade MLOps pipeline** that automates the complet
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -211,7 +211,7 @@ ollama list
 
 ---
 
-## 📊 Workflow & Features
+## Workflow & Features
 
 ### 1. Stock Analysis Pipeline
 
@@ -283,7 +283,7 @@ Grafana Dashboards
 
 ---
 
-## 📚 API Documentation
+## API Documentation
 
 ### Core Endpoints
 
@@ -381,7 +381,7 @@ curl http://localhost:8000/monitor/NVDA
 
 ---
 
-## 🔧 Development
+## Development
 
 ### Local Setup (Without Docker)
 
@@ -427,7 +427,7 @@ cd frontend && npm run lint
 
 ---
 
-## 📦 Deployment
+## Deployment
 
 ### Local with Docker Compose
 
@@ -505,7 +505,7 @@ kubectl port-forward -n mujtaba-mlops svc/grafana 3000:3000
 
 ---
 
-## 📊 System Performance
+## System Performance
 
 ### Benchmarks (On 4-core / 8GB RAM)
 
@@ -519,7 +519,7 @@ kubectl port-forward -n mujtaba-mlops svc/grafana 3000:3000
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please:
 
@@ -531,13 +531,13 @@ Contributions are welcome! Please:
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License—see [LICENSE](LICENSE) file for details.
 
 ---
 
-## 📞 Support & Contact
+## Support & Contact
 
 - **GitHub**: https://github.com/MujtabaJunaid
 - **Email**: mujtabajunaid@github.com
@@ -545,7 +545,7 @@ This project is licensed under the MIT License—see [LICENSE](LICENSE) file for
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Ollama** for open-source LLM inference
 - **LangGraph** for AI agent orchestration
@@ -556,5 +556,5 @@ This project is licensed under the MIT License—see [LICENSE](LICENSE) file for
 
 ---
 
-**Built with ❤️ by Mujtaba Junaid**  
+**Built with passion by Mujtaba Junaid**  
 *Last Updated: March 2025*

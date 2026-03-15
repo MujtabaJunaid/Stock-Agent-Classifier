@@ -9,9 +9,6 @@ from logger.logger import get_logger
 
 logger = get_logger()
 
-# =========================================================
-# HELPER: Fetch Data
-# =========================================================
 def fetch_ohlcv(ticker: str, start_date: str, end_date: str) -> pd.DataFrame:
     """Fetch numeric data from YFinance."""
     try:
@@ -29,9 +26,6 @@ def fetch_ohlcv(ticker: str, start_date: str, end_date: str) -> pd.DataFrame:
         logger.error(f"Drift Fetch Error {ticker}: {e}")
         return pd.DataFrame()
 
-# =========================================================
-# CORE: Custom Drift Logic (No Dependencies)
-# =========================================================
 def calculate_custom_drift(ref_df: pd.DataFrame, curr_df: pd.DataFrame) -> Dict[str, Any]:
     """
     Industry standard custom drift detection.
@@ -91,7 +85,7 @@ def check_drift(ticker: str, output_base: str) -> Dict[str, Any]:
     Standard check drift function.
     No heavy dependencies (Evidently removed).
     """
-    logger.info(f"📊 [Custom Drift] Checking {ticker}...")
+    logger.info(f"[Custom Drift] Checking {ticker}...")
     
     # 1. Setup Dates
     now = datetime.now()
@@ -120,9 +114,9 @@ def check_drift(ticker: str, output_base: str) -> Dict[str, Any]:
             json.dump(drift_res, f, indent=2)
             
         # Also save a simple text report for logs
-        logger.info(f"✅ [Drift] {ticker}: Status={drift_res['health']}, Score={drift_res['drift_score']}")
+        logger.info(f"[Drift] {ticker}: Status={drift_res['health']}, Score={drift_res['drift_score']}")
         
         return drift_res
     except Exception as e:
-        logger.error(f"❌ Custom Drift Failed: {e}")
+        logger.error(f"Custom Drift Failed: {e}")
         return {"status": "failed", "error": str(e)}

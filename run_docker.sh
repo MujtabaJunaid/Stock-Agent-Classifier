@@ -1,11 +1,11 @@
 #!/bin/bash
 
-echo "🐳 Starting MLOps Pipeline with Docker Compose..."
+echo "Starting MLOps Pipeline with Docker Compose..."
 
 # Build and start in detached mode
 docker-compose up --build -d
 
-echo "✅ Deployment successful!"
+echo "Deployment successful!"
 echo "--------------------------------------------------"
 echo "Services are available at:"
 echo "- FastAPI: http://localhost:8000/docs"

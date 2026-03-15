@@ -25,7 +25,7 @@ try:
     ).bind_tools(TOOLS_LIST)
 
 except Exception as e:
-    print(f"⚠️ LLM Init Error: {e}")
+    print(f"LLM Init Error: {e}")
     class Mock:
         def invoke(self, *args, **kwargs):
             return AIMessage(content=f"Mock response: LLM unavailable. Error: {e}")
@@ -38,10 +38,10 @@ except Exception as e:
 def performance_analyst_node(state: dict) -> dict:
     ticker = state["ticker"]
     predictions = state.get("predictions")
-    logger.info(f"📈 [Agent: Performance] Analyzing trends for {ticker}")
+    logger.info(f"[Agent: Performance] Analyzing trends for {ticker}")
 
     if predictions == "__MODEL_TRAINING__":
-        logger.warning(f"⚠️ [Agent: Performance] Model for {ticker} is still training.")
+        logger.warning(f"[Agent: Performance] Model for {ticker} is still training.")
         return {
             "messages": [AIMessage(content=f"Model for {ticker} is currently training.")],
             "predictions": predictions
@@ -69,7 +69,7 @@ def performance_analyst_node(state: dict) -> dict:
 # --------------------------------------------------------------------------
 def market_expert_node(state: dict) -> dict:
     ticker = state["ticker"]
-    logger.info(f"🗞️ [Agent: Market Expert] Fetching and summarizing news for {ticker}")
+    logger.info(f"[Agent: Market Expert] Fetching and summarizing news for {ticker}")
     news = get_stock_news(ticker)
 
     prompt = f"""
@@ -146,7 +146,7 @@ def critic_node(state: dict) -> dict:
     It checks for consistency between predictions and recommendation.
     """
     ticker = state.get("ticker", "N/A")
-    logger.info(f"⚖️ [Agent: Critic] Reviewing and refining report for {ticker}")
+    logger.info(f"[Agent: Critic] Reviewing and refining report for {ticker}")
     current_report = state.get("final_report", "")
     predictions = state.get("predictions", "")
     

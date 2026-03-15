@@ -26,7 +26,7 @@ def save_model(model, scaler: StandardScaler, path: str, model_type="parent", ti
         # Log to MLflow
         mlflow.log_artifact(torch_path, "model")
         mlflow.log_artifact(scaler_path, "model")
-        logger.info(f"✅ Model artifacts logged to MLflow for {model_type.upper()} model")
+        logger.info(f"Model artifacts logged to MLflow for {model_type.upper()} model")
 
         return torch_path, scaler_path
     except Exception as e:

@@ -384,10 +384,10 @@ def reset_system():
         if redis_client:
             try:
                 redis_client.flushall()
-                results["redis"] = "✅ Flushed"
-                logger.info("✅ Redis flushed")
+                results["redis"] = "Flushed"
+                logger.info("Redis flushed")
             except Exception as e:
-                results["redis"] = f"❌ Failed: {e}"
+                results["redis"] = f"Failed: {e}"
         else:
             results["redis"] = "Skipped (Not connected)"
             
@@ -400,10 +400,10 @@ def reset_system():
             if mem.collection_name in collections:
                 mem.client.delete_collection(mem.collection_name)
             mem._ensure_collection() # Re-create empty
-            results["qdrant"] = "✅ Collection wiped and recreated"
-            logger.info("✅ Qdrant wiped")
+            results["qdrant"] = "Collection wiped and recreated"
+            logger.info("Qdrant wiped")
         except Exception as e:
-            results["qdrant"] = f"❌ Failed: {e}"
+            results["qdrant"] = f"Failed: {e}"
 
         # 3. Reset Feast Registry & Data
         try:
@@ -419,10 +419,10 @@ def reset_system():
                  if os.path.exists(p):
                      os.remove(p)
                      removed_feast.append(os.path.basename(p))
-            results["feast"] = f"✅ Removed: {', '.join(removed_feast)}" if removed_feast else "✅ Nothing to remove"
-            logger.info(f"✅ Feast cleanup: {removed_feast}")
+            results["feast"] = f"Removed: {', '.join(removed_feast)}" if removed_feast else "Nothing to remove"
+            logger.info(f"Feast cleanup: {removed_feast}")
         except Exception as e:
-            results["feast"] = f"❌ Failed: {e}"
+            results["feast"] = f"Failed: {e}"
 
         # 4. Wipe Outputs (Models, Plots, etc)
         try:
@@ -440,13 +440,13 @@ def reset_system():
                     except Exception as e:
                         logger.error(f"Failed to delete {item_path}: {e}")
                 
-                results["outputs"] = "✅ Wiped all files in outputs directory"
-                logger.info(f"✅ Cleared outputs directory: {BASE_PATH}")
+                results["outputs"] = "Wiped all files in outputs directory"
+                logger.info(f"Cleared outputs directory: {BASE_PATH}")
             else:
                 os.makedirs(BASE_PATH, exist_ok=True)
-                results["outputs"] = "✅ Created missing outputs directory"
+                results["outputs"] = "Created missing outputs directory"
         except Exception as e:
-            results["outputs"] = f"❌ Failed: {e}"
+            results["outputs"] = f"Failed: {e}"
 
         return {
             "status": "System Reset Complete",

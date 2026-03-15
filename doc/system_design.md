@@ -1,4 +1,4 @@
-# 📘 MLOps Stock Prediction Pipeline: Complete Technical Documentation
+# MLOps Stock Prediction Pipeline: Complete Technical Documentation
 
 **A Comprehensive Guide to Production-Ready ML Systems**
 
@@ -57,45 +57,45 @@ The system follows a microservices architecture with clear separation of concern
 ```mermaid
 graph TB
     subgraph "User Layer"
-        USER[👤 End User]
-        UI[🖥️ Streamlit Frontend]
-        MON_UI[📊 Monitoring Dashboard]
+        USER[End User]
+        UI[Streamlit Frontend]
+        MON_UI[Monitoring Dashboard]
     end
     
     subgraph "API Layer"
-        API[⚡ FastAPI Backend]
+        API[FastAPI Backend]
     end
     
     subgraph "Data Layer"
-        YF[📈 Yahoo Finance API]
-        FEAST[🍽️ Feast Feature Store]
-        PARQUET[(📦 Parquet Files)]
+        YF[Yahoo Finance API]
+        FEAST[Feast Feature Store]
+        PARQUET[(Parquet Files)]
     end
     
     subgraph "ML Layer"
-        TRAIN[🎓 Training Pipeline]
-        INFER[🔮 Inference Engine]
-        PARENT[🏛️ Parent Model<br/>S&P 500]
-        CHILD[📱 Child Models<br/>Individual Stocks]
+        TRAIN[Training Pipeline]
+        INFER[Inference Engine]
+        PARENT[Parent Model<br/>S&P 500]
+        CHILD[Child Models<br/>Individual Stocks]
     end
     
     subgraph "AI Layer"
-        AGENT[🤖 LangGraph Agents]
-        OLLAMA[🧠 Ollama LLM<br/>gpt-oss:20b-cloud]
-        EMBED[🔤 Ollama Embeddings<br/>nomic-embed-text]
+        AGENT[LangGraph Agents]
+        OLLAMA[Ollama LLM (gpt-oss:20b-cloud)]
+        EMBED[Ollama Embeddings (nomic-embed-text)]
     end
     
     subgraph "Storage Layer"
-        REDIS[(🔴 Redis<br/>Cache & State)]
-        QDRANT[(🔷 Qdrant<br/>Vector DB)]
-        MLFLOW[📊 MLflow/DagsHub<br/>Model Registry]
-        OUTPUTS[(📁 Outputs<br/>Artifacts)]
+        REDIS[(Redis (Cache & State))]
+        QDRANT[(Qdrant (Vector DB))]
+        MLFLOW[MLflow/DagsHub (Model Registry)]
+        OUTPUTS[(Outputs (Artifacts))]
     end
     
     subgraph "Monitoring Layer"
-        PROM[📈 Prometheus]
-        GRAF[📊 Grafana]
-        EVID[🔍 Evidently AI]
+        PROM[Prometheus]
+        GRAF[Grafana]
+        EVID[Evidently AI]
     end
     
     USER --> UI
@@ -138,7 +138,7 @@ graph TB
 
 | Component | Responsibility | Technology |
 |-----------|---------------|------------|
-| **Frontend** | User interface for predictions and analysis | Streamlit |
+| **Frontend** | User interface for predictions and analysis | React + TypeScript |
 | **API Gateway** | Request orchestration, routing, validation | FastAPI |
 | **Training Pipeline** | Model training with transfer learning | PyTorch, Feast |
 | **Inference Engine** | Real-time predictions with caching | PyTorch, Redis |

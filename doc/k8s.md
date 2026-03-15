@@ -4,7 +4,7 @@ This guide provides a professional, production-ready workflow for running the ML
 
 ---
 
-## ⚡️ Quick Start (Next Time / Day 2)
+## Quick Start (Next Time / Day 2)
 
 If you have already performed the initial setup, use this 3-step loop:
 
@@ -108,7 +108,7 @@ Once the tunnel is active, access the services via `localhost`:
 
 ---
 
-## 🛡️ Best Practices Implemented
+## Best Practices Implemented
 
 1.  **Resource Limits**: Every deployment now has `cpu` and `memory` limits/requests defined to prevent "noisy neighbor" issues and OOM kills.
 2.  **Health Probes**: FastAPI now includes `readinessProbe` and `livenessProbe` to ensure traffic is only routed to healthy containers.

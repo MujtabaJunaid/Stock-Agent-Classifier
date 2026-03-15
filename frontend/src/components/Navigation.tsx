@@ -13,10 +13,9 @@ export default function Navigation({ currentPage, onPageChange }: NavigationProp
     <nav className="fixed top-0 left-0 right-0 bg-dark-800 border-b border-dark-700 shadow-lg z-50">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo & Project Name */}
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-lg bg-accent-primary flex items-center justify-center text-dark-900 font-bold text-lg">
-              📈
+              Stock
             </div>
             <div>
               <h1 className="text-xl font-bold text-white">MLOps Stock Analyst</h1>
@@ -24,7 +23,6 @@ export default function Navigation({ currentPage, onPageChange }: NavigationProp
             </div>
           </div>
 
-          {/* Navigation Links */}
           <div className="flex items-center gap-8">
             <button
               onClick={() => onPageChange('dashboard')}
@@ -57,7 +55,6 @@ export default function Navigation({ currentPage, onPageChange }: NavigationProp
               Monitoring
             </button>
 
-            {/* Session Info */}
             <div className="pl-8 border-l border-dark-700">
               <p className="text-xs text-gray-400">Session ID</p>
               <p className="text-sm font-mono text-gray-200">{sessionId.substring(0, 8)}</p>

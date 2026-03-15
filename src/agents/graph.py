@@ -90,7 +90,7 @@ def analyze_stock(ticker: str, thread_id: str = None):
                 cached_payload = best_hit.payload
                 # Check if it's for the same ticker to be safe (semantic search might be fuzzy)
                 if cached_payload.get("ticker") == ticker_upper:
-                    print(f"✅ Semantic Cache HIT for {ticker_upper}")
+                    print(f"Semantic Cache HIT for {ticker_upper}")
                     return {
                         "final_report": cached_payload.get("summary"),
                         "recommendation": cached_payload.get("recommendation", "Neutral"),
@@ -99,7 +99,7 @@ def analyze_stock(ticker: str, thread_id: str = None):
                         "predictions": cached_payload.get("predictions", {})
                     }
         except Exception as e:
-            print(f"⚠️ Semantic Cache Error: {e}")
+            print(f"Semantic Cache Error: {e}")
 
     # ---------------------------------------------------------
     # 2. FETCH DATA & RUN AGENT
@@ -194,8 +194,8 @@ def analyze_stock(ticker: str, thread_id: str = None):
                 last_price=last_price,
                 predictions=preds_data if isinstance(preds_data, dict) else {}
             )
-            print(f"✅ Saved to Qdrant: {ticker_upper}")
+            print(f"Saved to Qdrant: {ticker_upper}")
         except Exception as e:
-            print(f"⚠️ Failed to save cache: {e}")
+            print(f"Failed to save cache: {e}")
     
     return result

@@ -54,14 +54,14 @@ async def startup():
             client.ping()
             app_state.redis_client = client # Update the global
             REDIS_STATUS.set(1)
-            logger.info("✅ Systems online (Redis, MLflow, Agents)")
+            logger.info("Systems online (Redis, MLflow, Agents)")
             return
         except Exception as e:
             logger.warning(f"⏳ Waiting for Redis... attempt {i+1}/10")
             await asyncio.sleep(5)
             
     REDIS_STATUS.set(0)
-    logger.error("❌ Failed to connect to Redis after multiple attempts.")
+    logger.error("Failed to connect to Redis after multiple attempts.")
 
 if __name__ == "__main__":
     uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)

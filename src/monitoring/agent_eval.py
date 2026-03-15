@@ -18,7 +18,7 @@ class AgentEvaluator:
         Runs the agent and evaluates the output using custom heuristics.
         No external dependencies (LangSmith/LangChain) required for evaluation.
         """
-        logger.info(f"🤖 [Agent Eval] Evaluating {ticker}...")
+        logger.info(f"[Agent Eval] Evaluating {ticker}...")
         
         eval_dir = os.path.join(self.output_base, ticker.lower(), "agent_eval")
         os.makedirs(eval_dir, exist_ok=True)
@@ -34,7 +34,7 @@ class AgentEvaluator:
             else:
                 text = str(result)
         except Exception as e:
-            logger.error(f"❌ Agent Run Failed: {e}")
+            logger.error(f"Agent Run Failed: {e}")
             return {"status": "failed", "error": str(e)}
 
         duration = time.time() - start_ts
@@ -62,7 +62,7 @@ class AgentEvaluator:
         with open(latest_path, "w") as f:
             json.dump(result_data, f, indent=2)
             
-        logger.info(f"✅ [Agent Eval] Score={metrics['overall_score']:.2f}")
+        logger.info(f"[Agent Eval] Score={metrics['overall_score']:.2f}")
         return result_data
 
     def _heuristic_checks(self, ticker: str, text: str) -> Dict[str, Any]:

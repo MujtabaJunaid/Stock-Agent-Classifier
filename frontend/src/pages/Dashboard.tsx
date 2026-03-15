@@ -53,29 +53,31 @@ export default function Dashboard() {
       ) : (
         <>
           {/* Health & System Metrics */}
+          {/* Health & System Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
             <MetricCard
               label="API Status"
-              value={health?.status === 'healthy' ? '✓ Healthy' : '✗ Offline'}
-              icon="🚀"
+              value={health?.status === 'healthy' ? 'Healthy' : 'Offline'}
+              icon={health?.status === 'healthy' ? 'OK' : 'ERROR'}
             />
             <MetricCard
               label="Prediction Latency"
               value={`${metrics?.prediction_latency?.toFixed(2) || 0}ms`}
-              icon="⚡"
+              icon="SPEED"
             />
             <MetricCard
               label="Cache Hit Rate"
               value={`${cache?.hit_rate?.toFixed(1) || 0}%`}
-              icon="💾"
+              icon="CACHE"
             />
             <MetricCard
               label="Active Sessions"
               value={metrics?.active_sessions || 0}
-              icon="👥"
+              icon="USERS"
             />
           </div>
 
+          {/* System Info */}
           {/* System Info */}
           <div className="bg-dark-800 rounded-xl p-6 border border-dark-700">
             <h2 className="text-lg font-bold text-white mb-4">System Information</h2>

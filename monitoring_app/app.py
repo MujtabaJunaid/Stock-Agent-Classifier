@@ -33,8 +33,8 @@ with st.sidebar:
     st.header("Diagnostic Tools")
     
     # 1. Parent Training & Health
-    st.subheader("🛠️ Parent Management")
-    if st.button("🏗️ Master Train Parent (^GSPC)", use_container_width=True, help="Priming the root model (requires ~1-2 mins)"):
+    st.subheader("Parent Management")
+    if st.button("Master Train Parent (^GSPC)", use_container_width=True, help="Priming the root model (requires ~1-2 mins)"):
         try:
             t_resp = requests.post(f"{API_URL}/train-parent")
             if t_resp.status_code == 200:
@@ -52,7 +52,7 @@ with st.sidebar:
     
     # 2. Child Ticker Input
     user_ticker = st.text_input("Analyze Child Ticker", placeholder="AAPL, NVDA...").strip().upper()
-    if st.button("🔍 Run Quality Check", use_container_width=True):
+    if st.button("Run Quality Check", use_container_width=True):
         if user_ticker:
             st.session_state.current_ticker = user_ticker
             st.session_state.do_monitor = True
@@ -126,13 +126,13 @@ if "current_ticker" in st.session_state:
                     cols = st.columns(len(checks))
                     for i, (k, v) in enumerate(checks.items()):
                         with cols[i]:
-                            st.markdown(f"{'✅' if v else '❌'}\n\n**{k.replace('_',' ').title()}**")
+                            st.markdown(f"{'OK' if v else 'FAIL'}\n\n**{k.replace('_',' ').title()}**")
                 
                 st.markdown("---")
-                with st.expander("🔍 View Final Report Analysis"):
+                with st.expander("View Final Report Analysis"):
                     report_text = d.get("output_preview_text", "No preview available")
                     if "status" in report_text and "training" in report_text:
-                         st.warning("⚠️ Agent reported model training in progress. Evaluation is a placeholder.")
+                         st.warning("Agent reported model training in progress. Evaluation is a placeholder.")
                     st.markdown(report_text)
         else:
             st.info("No audit logs found for this ticker. Run 'Quality Check' to initiate.")
@@ -172,7 +172,7 @@ if "current_ticker" in st.session_state:
 
 else:
     # Minimal Landing
-    st.markdown("### 🔍 Select a diagnostic tool to start.")
+    st.markdown("### Select a diagnostic tool to start.")
     st.write("Use the sidebar check Parent Model Health or evaluate a specific stock agent.")
     
     if os.path.exists(OUTPUTS_DIR):

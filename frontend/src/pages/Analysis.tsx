@@ -42,6 +42,7 @@ export default function Analysis() {
       </div>
 
       {/* Search Input */}
+      {/* Search Input */}
       <div className="bg-dark-800 rounded-xl p-6 border border-dark-700 mb-8">
         <div className="flex gap-4">
           <input
@@ -58,7 +59,7 @@ export default function Analysis() {
             disabled={isLoading || !input.trim()}
             className="px-8 py-3 bg-accent-primary text-dark-900 font-bold rounded-lg hover:bg-accent-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
           >
-            {isLoading ? '🔄 Analyzing' : '🚀 Analyze'}
+            {isLoading ? 'Analyzing' : 'Analyze'}
           </button>
         </div>
       </div>
@@ -70,6 +71,7 @@ export default function Analysis() {
       {analysisResults && !isLoading && (
         <>
           {/* Price Chart */}
+          {/* Price Chart */}
           <div className="mb-8">
             <PriceChart
               ticker={analysisResults.ticker}
@@ -79,24 +81,26 @@ export default function Analysis() {
           </div>
 
           {/* Analysis Metrics */}
+          {/* Analysis Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <MetricCard
               label="Confidence Score"
               value={`${(analysisResults.confidence! * 100).toFixed(0)}%`}
-              icon="📊"
+              icon="SCORE"
             />
             <MetricCard
               label="Forecast Horizon"
               value="30 days"
-              icon="📅"
+              icon="CALENDAR"
             />
             <MetricCard
               label="Model Type"
               value="LSTM Transfer"
-              icon="🧠"
+              icon="AI"
             />
           </div>
 
+          {/* AI Report */}
           {/* AI Report */}
           {analysisResults.report && (
             <div className="bg-dark-800 rounded-xl p-6 border border-dark-700">

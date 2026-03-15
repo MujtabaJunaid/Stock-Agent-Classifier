@@ -193,7 +193,7 @@ if "active_ticker" in st.session_state and st.session_state.active_ticker:
         status_container = st.container()
         
         with status_container:
-            with st.spinner(f"🔍 Analyzing {ticker}..."):
+            with st.spinner(f"Analyzing {ticker}..."):
                 try:
                     payload = {"ticker": ticker, "thread_id": st.session_state.session_id}
                     resp = requests.post(f"{API_URL}/analyze", json=payload, timeout=120)
@@ -203,7 +203,7 @@ if "active_ticker" in st.session_state and st.session_state.active_ticker:
                         
                         # Case A: Need Training
                         if data.get("status") == "training":
-                            st.warning(f"🏗️ Constructing Neural Model (First-time run)...")
+                            st.warning(f"Constructing Neural Model (First-time run)...")
                             prog_bar = st.progress(0)
                             status_text = st.empty()
                             
@@ -223,12 +223,12 @@ if "active_ticker" in st.session_state and st.session_state.active_ticker:
                                         
                                         if status == "completed":
                                             prog_bar.progress(100)
-                                            status_text.success("✅ Model Training Complete!")
+                                            status_text.success("Model Training Complete!")
                                             time.sleep(1) # Small delay for visual feedback
                                             st.rerun() # Refresh to start clean analysis
                                             break
                                         elif status == "failed":
-                                            st.error(f"❌ Model Training Failed for {ticker}")
+                                            st.error(f"Model Training Failed for {ticker}")
                                             st.session_state.active_ticker = None
                                             st.stop()
                                         else:
@@ -241,7 +241,7 @@ if "active_ticker" in st.session_state and st.session_state.active_ticker:
                         
                         # Case B: Error from Agent
                         if data.get("status") == "error":
-                            st.error(f"❌ Analysis failed: {data.get('detail')}")
+                            st.error(f"Analysis failed: {data.get('detail')}")
                             st.session_state.active_ticker = None
                             st.stop()
 
@@ -270,7 +270,7 @@ if "active_ticker" in st.session_state and st.session_state.active_ticker:
         forecast, history = parse_predictions(preds_raw)
         
         # KPIs
-        st.markdown(f"## 🏛️ Analysis: {ticker}")
+        st.markdown(f"## Analysis: {ticker}")
         
         kpi1, kpi2, kpi3 = st.columns(3)
         

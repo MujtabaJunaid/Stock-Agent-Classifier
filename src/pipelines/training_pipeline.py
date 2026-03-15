@@ -23,10 +23,6 @@ logger = get_logger()
 
 
 
-# =============================================================
-# ✅ HELPER FUNCTIONS
-# =============================================================
-
 def _safe_promote_to_production(model_name: str, version: int):
     """Promote model version to Production (safe for DagsHub)."""
     try:
@@ -37,9 +33,9 @@ def _safe_promote_to_production(model_name: str, version: int):
             stage="Production",
             archive_existing_versions=True
         )
-        logger.info(f"✅ Promoted {model_name} v{version} → Production")
+        logger.info(f"Promoted {model_name} v{version} to Production")
     except Exception as e:
-        logger.warning(f"⚠️ Registry not supported: {e}")
+        logger.warning(f"Registry not supported: {e}")
 
 
 # _register_model_in_registry removed (ONNX specific)
@@ -57,9 +53,9 @@ def _get_output_paths(base_dir: str, ticker: str, model_type: str):
 # _export_to_torchserve removed
 
 
-# =============================================================
-# 🧠 PARENT MODEL TRAINING
-# =============================================================
+# PARENT MODEL TRAINING
+
+
 
 def train_parent() -> Dict:
     """Train fixed parent model (^GSPC)."""
@@ -98,7 +94,7 @@ def train_parent() -> Dict:
             torch.save(model.state_dict(), torch_path)
             joblib.dump(scaler, scaler_path)
 
-            # ✅ Evaluate
+            # Evaluate
             model.eval()
             metrics = evaluate_model_temp(model, df, scaler, out_dir, ticker)
 
@@ -110,16 +106,12 @@ def train_parent() -> Dict:
 
             # _register_model_in_registry(onnx_path, f"ParentModel_{ticker}") # Skipping registry for now as it was ONNX specific
 
-            logger.info(f"✅ Parent {ticker} trained successfully")
+            logger.info(f"Parent {ticker} trained successfully")
             return {"ticker": ticker, "run_id": run.info.run_id, "metrics": metrics}
         except Exception as e:
             logger.error(f"Parent training failed: {e}")
             raise PipelineError(f"Parent training failed: {e}")
 
-
-# =============================================================
-# 🧬 CHILD MODEL TRAINING (TRANSFER LEARNING)
-# =============================================================
 
 def train_child(ticker: str) -> Dict:
     """Train child model using parent weights (transfer learning)."""
@@ -164,7 +156,7 @@ def train_child(ticker: str) -> Dict:
             learning_rate = 3e-4
             
             if cfg.transfer_strategy == "freeze":
-                logger.info("❄️ Strategy: Freeze LSTM layers")
+                logger.info("Strategy: Freeze LSTM layers")
                 for name, param in parent_model.named_parameters():
                     if "lstm" in name:
                         param.requires_grad = False
@@ -174,7 +166,7 @@ def train_child(ticker: str) -> Dict:
                     param.requires_grad = True
                 learning_rate = cfg.fine_tune_lr
             else:
-                logger.warning(f"⚠️ Unknown strategy '{cfg.transfer_strategy}', defaulting to 'freeze'")
+                logger.warning(f"Unknown strategy '{cfg.transfer_strategy}', defaulting to 'freeze'")
                 for name, param in parent_model.named_parameters():
                     if "lstm" in name:
                         param.requires_grad = False
@@ -186,7 +178,7 @@ def train_child(ticker: str) -> Dict:
             torch.save(model.state_dict(), torch_path)
             joblib.dump(scaler, scaler_path)
 
-            # ✅ Evaluate
+            # Evaluate
             model.eval()
             metrics = evaluate_model_temp(model, df, scaler, child_dir, ticker)
 
@@ -197,7 +189,7 @@ def train_child(ticker: str) -> Dict:
 
             # _register_model_in_registry(onnx_path, f"ChildModel_{ticker}")
 
-            logger.info(f"✅ Child {ticker} trained successfully")
+            logger.info(f"Child {ticker} trained successfully")
             return {"ticker": ticker, "run_id": run.info.run_id, "metrics": metrics}
         except Exception as e:
             logger.error(f"Child training failed: {e}")

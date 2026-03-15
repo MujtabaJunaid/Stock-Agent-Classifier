@@ -86,7 +86,7 @@ def fetch_ohlcv(ticker: str, start: str = Config().start_date, end: Optional[str
                     # Release within the with block happens automatically on close, but explicit unlock is good
                     fcntl.flock(lock_file, fcntl.LOCK_UN)
             
-            print(f"✅ Saved features to {data_path}")
+            print(f"Saved features to {data_path}")
 
             # Run Feast apply and materialize
             # Note: In a real prod env, this might be a separate service or step
@@ -130,12 +130,12 @@ def fetch_ohlcv(ticker: str, start: str = Config().start_date, end: Optional[str
                 check=True,
                 capture_output=True
             )
-            print("✅ Feast features materialized to Redis")
+            print("Feast features materialized to Redis")
 
         except subprocess.CalledProcessError as e:
-            print(f"⚠️ Feast command failed: {e.stderr.decode() if e.stderr else e}")
+            print(f"Feast command failed: {e.stderr.decode() if e.stderr else e}")
         except Exception as e:
-            print(f"⚠️ Feast ingestion failed: {e}")
+            print(f"Feast ingestion failed: {e}")
 
         return df
     except Exception as e:

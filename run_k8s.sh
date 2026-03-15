@@ -5,10 +5,10 @@ CPUS=4
 MEMORY=6144
 DISK="20g"
 
-echo "🚀 Starting Minikube..."
+echo "Starting Minikube..."
 minikube start --driver=docker --cpus $CPUS --memory $MEMORY --disk-size $DISK
 
-echo "📦 Building Docker Images (on HOST for speed)..."
+echo "Building Docker Images (on HOST for speed)..."
 # Build Backend
 docker build -t stock-agent-ops-fastapi:latest -f backend/Dockerfile .
 # Build Frontend

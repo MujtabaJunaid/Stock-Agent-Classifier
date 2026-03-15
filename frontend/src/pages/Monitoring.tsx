@@ -55,7 +55,7 @@ export default function Monitoring() {
           disabled={trainingParent}
           className="px-6 py-3 bg-accent-secondary text-white font-bold rounded-lg hover:bg-accent-secondary/90 disabled:opacity-50 transition-all"
         >
-          {trainingParent ? '🔄 Training Parent Model...' : '🏗️ Train Parent Model (^GSPC)'}
+          {trainingParent ? 'Training Parent Model...' : 'Train Parent Model (S&P 500)'}
         </button>
       </div>
 
@@ -83,9 +83,9 @@ export default function Monitoring() {
 
         {monitoringData && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <MetricCard label="Drift Score" value="0.12" trend="neutral" icon="📊" />
-            <MetricCard label="Model Accuracy" value="94.2%" trend="up" icon="📈" />
-            <MetricCard label="Last Updated" value="2 mins ago" icon="🕐" />
+            <MetricCard label="Drift Score" value="0.12" trend="neutral" icon="DRIFT" />
+            <MetricCard label="Model Accuracy" value="94.2%" trend="up" icon="ACCURACY" />
+            <MetricCard label="Last Updated" value="2 mins ago" icon="TIME" />
           </div>
         )}
       </div>
@@ -94,10 +94,10 @@ export default function Monitoring() {
       <div className="bg-dark-800 rounded-xl p-6 border border-dark-700">
         <h2 className="text-lg font-bold text-white mb-4">System Status</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <MetricCard label="Redis" value="✓ Connected" icon="💾" />
-          <MetricCard label="Qdrant" value="✓ Connected" icon="🧠" />
-          <MetricCard label="Ollama" value="✓ Running" icon="🤖" />
-          <MetricCard label="Feast" value="✓ Synced" icon="🍽️" />
+          <MetricCard label="Redis" value="Connected" icon="CACHE" />
+          <MetricCard label="Qdrant" value="Connected" icon="AI" />
+          <MetricCard label="Ollama" value="Running" icon="MODEL" />
+          <MetricCard label="Feast" value="Synced" icon="SYNC" />
         </div>
       </div>
     </div>

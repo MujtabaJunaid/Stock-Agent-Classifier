@@ -27,10 +27,6 @@ def get_feature_store():
         return None
 
 
-# =============================================================
-# 🔧 SAFE LOADERS
-# =============================================================
-
 def _safe_load_scaler(path: str):
     """Try loading scaler via pickle → fallback to joblib."""
     try:
@@ -66,19 +62,13 @@ def _load_local_model(ticker: str, model_type: str):
         model.eval()
         
         scaler = _safe_load_scaler(scaler_path)
-        logger.info(f"✅ Loaded {model_type} model for {ticker}")
+        logger.info(f"Loaded {model_type} model for {ticker}")
         return model, scaler
 
     except Exception as e:
         raise PipelineError(f"Local model load failed for {ticker}: {e}")
 
 
-
-
-
-# =============================================================
-# 🧠 PREDICTION FUNCTIONS
-# =============================================================
 
 def predict_parent():
     """Predict using locally saved parent model."""
@@ -103,7 +93,7 @@ def predict_parent():
                     ],
                     entity_rows=[{"ticker": cfg.parent_ticker}]
                 ).to_dict()
-                logger.info(f"✅ Fetched online features from Feast for {cfg.parent_ticker}: {feature_vector}")
+                logger.info(f"Fetched online features from Feast for {cfg.parent_ticker}: {feature_vector}")
             except Exception as e:
                 logger.warning(f"Failed to fetch from Feast: {e}")
         preds = predict_one_step_and_week(model, df, scaler, ticker)
@@ -123,7 +113,7 @@ def predict_parent():
                  hist_recs.append({"date": str(idx.date()), "close": row["close"]})
              preds["history"] = hist_recs
 
-        logger.info(f"✅ Parent prediction completed for {ticker}")
+        logger.info(f"Parent prediction completed for {ticker}")
         return preds
 
     except Exception as e:
@@ -153,7 +143,7 @@ def predict_child(ticker: str):
                     ],
                     entity_rows=[{"ticker": ticker}]
                 ).to_dict()
-                logger.info(f"✅ Fetched online features from Feast for {ticker}: {feature_vector}")
+                logger.info(f"Fetched online features from Feast for {ticker}: {feature_vector}")
             except Exception as e:
                 logger.warning(f"Failed to fetch from Feast: {e}")
         preds = predict_one_step_and_week(model, df, scaler, ticker)
@@ -177,7 +167,7 @@ def predict_child(ticker: str):
                  hist_recs.append({"date": str(idx.date()), "close": row["close"]})
              preds["history"] = hist_recs
 
-        logger.info(f"✅ Child prediction completed for {ticker}")
+        logger.info(f"Child prediction completed for {ticker}")
         return preds
 
 

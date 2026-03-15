@@ -24,7 +24,7 @@ def train_model_from_scratch(ticker: str, epochs: int):
     Trains a model from random initialization (no transfer learning).
     """
     cfg = Config()
-    logger.info(f"🚀 Training {ticker} from SCRATCH (Random Init)...")
+    logger.info(f"Training {ticker} from SCRATCH (Random Init)...")
     
     # 1. Prepare Data
     df = fetch_ohlcv(ticker, cfg.start_date)
@@ -61,7 +61,7 @@ def train_model_with_transfer(ticker: str, epochs: int, parent_model_path: str):
     Trains a model using weights from a parent model.
     """
     cfg = Config()
-    logger.info(f"🚀 Training {ticker} with TRANSFER LEARNING (Parent Weights)...")
+    logger.info(f"Training {ticker} with TRANSFER LEARNING (Parent Weights)...")
     
     # 1. Prepare Data
     df = fetch_ohlcv(ticker, cfg.start_date)
@@ -84,7 +84,7 @@ def train_model_with_transfer(ticker: str, epochs: int, parent_model_path: str):
     # Load weights
     try:
         model.load_state_dict(torch.load(parent_model_path, map_location=cfg.device))
-        logger.info("✅ Loaded parent weights successfully")
+        logger.info("Loaded parent weights successfully")
     except Exception as e:
         logger.error(f"Failed to load parent weights: {e}")
         raise e
@@ -113,23 +113,23 @@ def main():
     child_ticker = "GOOG"
     
     print(f"\n============================================================")
-    print(f"🧪 TRANSFER LEARNING COMPARISON: {child_ticker}")
+    print(f"TRANSFER LEARNING COMPARISON: {child_ticker}")
     print(f"============================================================\n")
     
     # 1. Ensure Parent Model Exists
     parent_path = os.path.join(cfg.parent_dir, f"{cfg.parent_ticker}_parent_model.pt")
     if not os.path.exists(parent_path):
-        print(f"⚠️ Parent model NOT found. Training {cfg.parent_ticker} first...")
+        print(f"Parent model NOT found. Training {cfg.parent_ticker} first...")
         train_parent()
     else:
-        print(f"✅ Parent Model Found: {parent_path}")
+        print(f"Parent Model Found: {parent_path}")
         
     # 2. Train with Transfer Learning
     print(f"\nrunning Scenario A: Transfer Learning...")
     try:
         tl_metrics = train_model_with_transfer(child_ticker, cfg.child_epochs, parent_path)
     except Exception as e:
-        print(f"❌ Transfer Learning Failed: {e}")
+        print(f"Transfer Learning Failed: {e}")
         return
 
     # 3. Train from Scratch
@@ -137,12 +137,12 @@ def main():
     try:
         scratch_metrics = train_model_from_scratch(child_ticker, cfg.child_epochs)
     except Exception as e:
-        print(f"❌ Scratch Training Failed: {e}")
+        print(f"Scratch Training Failed: {e}")
         return
         
     # 4. Show Results
     print(f"\n{'='*80}")
-    print(f"📢 FINAL RESULTS: {child_ticker}")
+    print(f"FINAL RESULTS: {child_ticker}")
     print(f"{'='*80}")
     print(f"{'Metric':<20} | {'scratch':<15} | {'transfer':<15} | {'Improvement':<25}")
     print(f"{'-'*80}")
@@ -164,18 +164,18 @@ def main():
             if t_val < s_val:
                 # e.g. 100s -> 50s = 50% reduction
                 if s_val != 0: percent = ((s_val - t_val) / abs(s_val)) * 100
-                note = f"✅ Reduced by {percent:.1f}%"
+                note = f"Reduced by {percent:.1f}%"
             else:
                 if s_val != 0: percent = ((t_val - s_val) / abs(s_val)) * 100
-                note = f"❌ Increased by {percent:.1f}%"
+                note = f"Increased by {percent:.1f}%"
         else:
             # Higher is better (R2)
             if t_val > s_val:
                  if s_val != 0: percent = ((t_val - s_val) / abs(s_val)) * 100
-                 note = f"✅ Improved by {percent:.1f}%"
+                 note = f"Improved by {percent:.1f}%"
             else:
                  if s_val != 0: percent = ((s_val - t_val) / abs(s_val)) * 100
-                 note = f"❌ Worse by {percent:.1f}%"
+                 note = f"Worse by {percent:.1f}%"
                  
         print(f"{key:<20} | {s_val:.5f}         | {t_val:.5f}         | {note}")
     
