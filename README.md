@@ -11,7 +11,7 @@
 
 **Developed by** [Mujtaba Junaid](https://github.com/MujtabaJunaid)
 
-**Repository)**: [This Repo's URL](https://github.com/MujtabaJunaid/stock-agent-classifier) 
+**Repository**: [This Repo's URL](https://github.com/MujtabaJunaid/stock-agent-classifier) 
 
 ---
 
