@@ -1,9 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: react-frontend
+  namespace: mujtaba-mlops
+  labels:
+    app: frontend
+    owner: mujtaba-junaid-ops
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: frontend
@@ -11,32 +15,55 @@ spec:
     metadata:
       labels:
         app: frontend
+        owner: mujtaba-junaid-ops
     spec:
       containers:
-      - name: frontend
-        image: stock-agent-ops-frontend:latest
-        imagePullPolicy: Never
+      - name: react
+        image: mujtaba-stock-classifier-frontend:latest
+        imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 8501
+        - containerPort: 5173
+          name: http
         env:
-        - name: API_URL
-          value: "http://fastapi:8000"
+        - name: VITE_API_URL
+          value: "http://fastapi-service.mujtaba-mlops:8000"
+        - name: NODE_ENV
+          value: "production"
         resources:
           requests:
-            cpu: "100m"
+            cpu: "200m"
             memory: "256Mi"
           limits:
-            cpu: "300m"
+            cpu: "500m"
             memory: "512Mi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5173
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5173
+          initialDelaySeconds: 20
+          periodSeconds: 10
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: frontend-service
+  namespace: mujtaba-mlops
+  labels:
+    app: frontend
+    owner: mujtaba-junaid-ops
 spec:
   type: LoadBalancer
   ports:
-  - port: 8501
-    targetPort: 8501
+  - port: 5173
+    targetPort: 5173
+    protocol: TCP
+    name: http
   selector:
     app: frontend

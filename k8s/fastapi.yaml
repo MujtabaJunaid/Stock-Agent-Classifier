@@ -1,9 +1,40 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mujtaba-mlops
+  labels:
+    owner: mujtaba-junaid-ops
+    environment: production
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mlops-config
+  namespace: mujtaba-mlops
+data:
+  SERVICE_NAME: "mujtaba-mlops-backend"
+  OWNER: "mujtaba-junaid-ops"
+  ENVIRONMENT: "production"
+  REDIS_HOST: "redis.mujtaba-mlops"
+  REDIS_PORT: "6379"
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fastapi
+  name: fastapi-backend
+  namespace: mujtaba-mlops
+  labels:
+    app: fastapi
+    owner: mujtaba-junaid-ops
 spec:
-  replicas: 1
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   selector:
     matchLabels:
       app: fastapi
@@ -11,43 +42,163 @@ spec:
     metadata:
       labels:
         app: fastapi
+        owner: mujtaba-junaid-ops
     spec:
+      serviceAccountName: mlops-service-account
       containers:
       - name: fastapi
-        image: stock-agent-ops-fastapi:latest
-        imagePullPolicy: Never
+        image: mujtaba-stock-classifier-api:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
+          name: http
         env:
+        - name: SERVICE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: mlops-config
+              key: SERVICE_NAME
+        - name: OWNER
+          valueFrom:
+            configMapKeyRef:
+              name: mlops-config
+              key: OWNER
         - name: REDIS_HOST
-          value: "redis"
+          valueFrom:
+            configMapKeyRef:
+              name: mlops-config
+              key: REDIS_HOST
         - name: REDIS_PORT
-          value: "6379"
+          valueFrom:
+            configMapKeyRef:
+              name: mlops-config
+              key: REDIS_PORT
+        - name: OLLAMA_BASE_URL
+          value: "http://ollama-service:11434"
+        envFrom:
+          - secretRef:
+              name: mlops-secrets
+              optional: true
         resources:
           requests:
             cpu: "500m"
             memory: "1Gi"
           limits:
-            cpu: "1"
-            memory: "2Gi"
+            cpu: "2"
+            memory: "4Gi"
         readinessProbe:
           httpGet:
             path: /health
             port: 8000
           initialDelaySeconds: 30
           periodSeconds: 10
+          timeoutSeconds: 5
         livenessProbe:
           httpGet:
             path: /health
             port: 8000
           initialDelaySeconds: 60
-          periodSeconds: 20
+          periodSeconds: 30
+          timeoutSeconds: 10
         volumeMounts:
-        - name: outputs-volume
+        - name: outputs-pvc
           mountPath: /app/outputs
+        - name: models-cache
+          mountPath: /app/models
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "sleep 15"]
       volumes:
-      - name: outputs-volume
+      - name: outputs-pvc
         persistentVolumeClaim:
+          claimName: mlops-outputs-pvc
+      - name: models-cache
+        persistentVolumeClaim:
+          claimName: mlops-models-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-service
+  namespace: mujtaba-mlops
+  labels:
+    app: fastapi
+    owner: mujtaba-junaid-ops
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: fastapi
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: fastapi-hpa
+  namespace: mujtaba-mlops
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: fastapi-backend
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mlops-service-account
+  namespace: mujtaba-mlops
+  labels:
+    owner: mujtaba-junaid-ops
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mlops-outputs-pvc
+  namespace: mujtaba-mlops
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 50Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mlops-models-pvc
+  namespace: mujtaba-mlops
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 100Gi
           claimName: mlops-outputs-pvc
 ---
 apiVersion: v1

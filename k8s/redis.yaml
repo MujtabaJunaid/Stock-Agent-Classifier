@@ -1,7 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis
+  name: redis-cache
+  namespace: mujtaba-mlops
+  labels:
+    app: redis
+    owner: mujtaba-junaid-ops
 spec:
   replicas: 1
   selector:
@@ -11,34 +15,69 @@ spec:
     metadata:
       labels:
         app: redis
+        owner: mujtaba-junaid-ops
     spec:
       containers:
       - name: redis
         image: redis/redis-stack:latest
         ports:
         - containerPort: 6379
+          name: redis
+        - containerPort: 8001
+          name: redis-ui
         resources:
           requests:
-            cpu: "100m"
-            memory: "256Mi"
-          limits:
             cpu: "200m"
             memory: "512Mi"
+          limits:
+            cpu: "1"
+            memory: "2Gi"
         volumeMounts:
         - name: redis-data
           mountPath: /data
+        livenessProbe:
+          exec:
+            command:
+              - redis-cli
+              - ping
+          initialDelaySeconds: 20
+          periodSeconds: 10
       volumes:
       - name: redis-data
         persistentVolumeClaim:
-          claimName: redis-data-pvc
+          claimName: redis-pvc
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: redis
+  namespace: mujtaba-mlops
+  labels:
+    app: redis
+    owner: mujtaba-junaid-ops
 spec:
+  type: ClusterIP
   ports:
   - port: 6379
     targetPort: 6379
+    name: redis
+  - port: 8001
+    targetPort: 8001
+    name: redis-ui
   selector:
     app: redis
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+  namespace: mujtaba-mlops
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 20Gi

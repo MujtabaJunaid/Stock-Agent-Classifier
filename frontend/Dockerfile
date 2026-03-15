@@ -1,16 +1,33 @@
+# Build stage
+FROM node:20-alpine AS builder
 
-FROM python:3.13-slim
+WORKDIR /app
 
-WORKDIR /frontend
+# Copy package files
+COPY package*.json ./
 
-# Install uv for dependency management
-RUN pip install uv
+# Install dependencies
+RUN npm install
 
-COPY . /frontend
+# Copy source code
+COPY . .
 
-# Install dependencies via uv (system-wide)
-RUN uv pip install --system -r requirements.txt
+# Build React app
+RUN npm run build
 
-EXPOSE 8501
+# Runtime stage
+FROM node:20-alpine
 
-CMD ["streamlit", "run", "app.py", "--server.address=0.0.0.0"]
+WORKDIR /app
+
+# Install serve to run production build
+RUN npm install -g serve
+
+# Copy built app from builder
+COPY --from=builder /app/dist ./dist
+
+# Expose port
+EXPOSE 5173
+
+# Start the app
+CMD ["serve", "-s", "dist", "-l", "5173"]

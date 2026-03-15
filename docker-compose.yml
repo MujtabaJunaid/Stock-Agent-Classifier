@@ -1,7 +1,7 @@
-
+version: '3.9'
 
 networks:
-  app_network:
+  mlops-network:
     driver: bridge
 
 services:
@@ -9,20 +9,22 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
-    container_name: fastapi
+    container_name: mujtaba-fastapi-server
     ports:
       - "8000:8000"
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - OLLAMA_BASE_URL=http://host.docker.internal:11434
-
+      - SERVICE_NAME=mujtaba-mlops-backend
+      - OWNER=mujtaba-junaid-ops
     env_file:
       - .env
     depends_on:
       - redis
+      - qdrant
     networks:
-      - app_network
+      - mlops-network
     volumes:
       - .:/app
       - ./outputs:/app/outputs
@@ -30,10 +32,11 @@ services:
       - ./mlartifacts:/app/mlartifacts
       - ./feature_store:/app/feature_store
     command: uvicorn backend.main:app --host 0.0.0.0 --port 8000 --workers 4
+    restart: unless-stopped
 
   redis:
     image: redis/redis-stack:latest
-    container_name: redis
+    container_name: mujtaba-redis-cache
     ports:
       - "6379:6379"
       - "8001:8001"
@@ -41,75 +44,77 @@ services:
     volumes:
       - redis_data:/data
     networks:
-      - app_network
-
+      - mlops-network
+    command: redis-server --appendonly yes --appendfsync everysec
 
   qdrant:
     image: qdrant/qdrant:latest
-    container_name: qdrant
+    container_name: mujtaba-qdrant-vector-db
     ports:
       - "6333:6333"
     volumes:
       - qdrant_data:/qdrant/storage
     networks:
-      - app_network
+      - mlops-network
+    restart: unless-stopped
+    environment:
+      - QDRANT_API_KEY=mujtaba-secure-key
 
   prometheus:
     image: prom/prometheus:latest
-    container_name: prometheus
+    container_name: mujtaba-prometheus-metrics
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
     depends_on:
       - fastapi
     networks:
-      - app_network
+      - mlops-network
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    restart: unless-stopped
 
   grafana:
     image: grafana/grafana:latest
-    container_name: grafana
+    container_name: mujtaba-grafana-dashboard
     ports:
       - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=mujtaba-admin-secure
+      - GF_SERVER_ROOT_URL=http://localhost:3000
     depends_on:
       - prometheus
     volumes:
       - ./grafana:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
     networks:
-      - app_network
+      - mlops-network
+    restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: frontend
+    container_name: mujtaba-react-frontend
     ports:
-      - "8501:8501"
+      - "5173:5173"
     networks:
-      - app_network
+      - mlops-network
     environment:
-      - API_URL=http://fastapi:8000
-
-  monitoring_dashboard:
-    build:
-      context: ./monitoring_app
-      dockerfile: Dockerfile
-    container_name: monitoring_dashboard
-    ports:
-      - "8502:8502"
+      - VITE_API_URL=http://fastapi:8000
+      - NODE_ENV=production
     depends_on:
       - fastapi
-    networks:
-      - app_network
-    volumes:
-      - ./outputs:/app/outputs
-    environment:
-      - API_URL=http://fastapi:8000
+    restart: unless-stopped
 
 volumes:
   redis_data:
+    driver: local
   qdrant_data:
+    driver: local
+  prometheus_data:
+    driver: local

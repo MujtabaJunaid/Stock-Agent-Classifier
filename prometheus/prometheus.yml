@@ -1,6 +1,38 @@
+# Prometheus Configuration - MLOps Stock Pipeline
+# Maintained by: Mujtaba Junaid
+# Repository: https://github.com/MujtabaJunaid/stock-agent-classifier
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'mujtaba-mlops-production'
+    owner: 'mujtaba-junaid-ops'
+    project: 'stock-analysis-pipeline'
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+rule_files: []
+
 scrape_configs:
-  - job_name: "fastapi"
+  - job_name: "fastapi-backend"
     metrics_path: "/metrics"
+    scrape_interval: 5s
     static_configs:
       - targets: ["fastapi:8000"]
-    scrape_interval: 5s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'mujtaba-fastapi-primary'
+
+  - job_name: "redis-cache"
+    scrape_interval: 10s
+    static_configs:
+      - targets: ["redis:6379"]
+
+  - job_name: "system-metrics"
+    static_configs:
+      - targets: ["localhost:9100"]
