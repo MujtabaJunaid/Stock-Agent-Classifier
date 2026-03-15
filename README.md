@@ -193,5 +193,3 @@ If you find this project helpful, let's connect!
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
-
-Created with ❤️ by **Karan**
