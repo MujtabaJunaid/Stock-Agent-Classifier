@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitoring-app
+  template:
+    metadata:
+      labels:
+        app: monitoring-app
+    spec:
+      containers:
+      - name: monitoring-app
+        image: stock-agent-ops-monitoring:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8502
+        env:
+        - name: API_URL
+          value: "http://fastapi:8000"
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "300m"
+            memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitoring-app
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8502
+    targetPort: 8502
+  selector:
+    app: monitoring-app

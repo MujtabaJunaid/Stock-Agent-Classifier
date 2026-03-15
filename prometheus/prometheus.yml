@@ -1,0 +1,6 @@
+scrape_configs:
+  - job_name: "fastapi"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: ["fastapi:8000"]
+    scrape_interval: 5s

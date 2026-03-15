@@ -1,0 +1,31 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# .ENV
+.env/
+*.env
+
+# MLflow
+mlruns/
+mlflow.db
+mlartifacts/
+
+# Logs
+logs
+
+# Outputs
+outputs/
+
+# No data 
+/data/
+*.db 
+grafana/
+
