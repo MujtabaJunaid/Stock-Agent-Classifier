@@ -9,9 +9,8 @@
 
 > **Production-ready MLOps system for institutional-grade stock market analysis using Transfer Learning (LSTM), LangGraph AI agents, and a modern React.js frontend.**
 
-**Developed by:** Mujtaba Junaid  
-**GitHub:** https://github.com/MujtabaJunaid  
-**Repository:** https://github.com/MujtabaJunaid/stock-agent-classifier
+**Developed by** [Mujtaba Junaid](https://github.com/MujtabaJunaid  )
+**[Repository])**: [This Repo's URL](https://github.com/MujtabaJunaid/stock-agent-classifier) 
 
 ---
 
