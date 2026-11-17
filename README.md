@@ -540,7 +540,7 @@ This project is licensed under the MIT License—see [LICENSE](LICENSE) file for
 ## Support & Contact
 
 - **GitHub**: https://github.com/MujtabaJunaid
-- **Email**: mujtabajunaid@github.com
+- **Email**: mujtabajunaid412@gmail.com
 - **Issues**: Report bugs or feature requests via GitHub Issues
 
 ---
