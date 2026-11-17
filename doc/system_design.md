@@ -1766,7 +1766,7 @@ LANGSMITH_API_KEY=your_key
 
 **Document Version**: 1.0  
 **Last Updated**: December 25, 2025  
-**Authors**: MLOps Team  
+**Author**: Mujtaba Junaid  
 **Status**: Production Ready
 
 ---
